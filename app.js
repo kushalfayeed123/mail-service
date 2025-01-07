@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const cors = require('cors'); // Import the CORS package
+
 
 // Initialize Express
 const app = express();
 const PORT = 3000;
 
 // Middleware
+app.use(cors());  // This allows requests from any origin
 app.use(bodyParser.json());
 
 // Configure NodeMailer with Gmail
