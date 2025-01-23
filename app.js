@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
-const cors = require('cors'); // Import the CORS package
-
+const cors = require('cors');
 
 // Initialize Express
 const app = express();
@@ -12,12 +11,14 @@ const PORT = 3000;
 app.use(cors());  // This allows requests from any origin
 app.use(bodyParser.json());
 
-// Configure NodeMailer with Gmail
+// Configure NodeMailer with Zoho Mail
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.zoho.com', // Zoho SMTP server
+    port: 465, // Secure SMTP port
+    secure: true, // Use SSL
     auth: {
-        user: 'segunajanaku617@gmail.com', // Your Gmail address
-        pass: 'lylz uryf tfsg oame', // Your App Password
+        user: 'support@financemoneyrecovery.com', // Your Zoho email
+        pass: 'GFpxSVhEaDab', // Your Zoho app password
     },
 });
 
@@ -36,8 +37,8 @@ app.post('/send-email', async (req, res) => {
 
     // Email content
     const mailOptions = {
-        from: `${email}`, // Sender's email
-        to: 'joey.mendez699@gmail.com', // Recipient's email
+        from: 'support@financemoneyrecovery.com', // Sender's email
+        to: 'support@financemoneyrecovery.com', // Recipient's email
         subject: `New message from ${fname} ${lname}`,
         text: `
             Form Name: ${formname || 'Not provided'}
@@ -51,52 +52,6 @@ app.post('/send-email', async (req, res) => {
             Dial Code: ${dial_code || 'Not provided'}
             First Name: ${fname}
             Last Name: ${lname}
-            Email: ${email}
-            Mobile Number: ${mobile_no || 'Not provided'}
-            Country: ${country || 'Not provided'}
-            Scam Type: ${scam_type || 'Not provided'}
-            Amount: ${amount || 'Not provided'}
-            Message: ${message}
-        `,
-    };
-
-    try {
-        // Send email
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ success: 'Email sent successfully.' });
-    } catch (error) {
-        console.error('Error sending email:', error);
-        res.status(500).json({ error: 'Failed to send email.' });
-    }
-});
-app.post('/send-email-2', async (req, res) => {
-    const {
-        amount, dial_code, email, fname, formname, gclid_field, ip, message, mobile_no, page_url, utm_campaign, utm_medium, utm_source,
-        utm_term
-
-    } = req.body;
-
-    // Validate required fields
-    if (!fname || !email || !message) {
-        return res.status(400).json({ error: 'First name, last name, email, and message are required.' });
-    }
-
-    // Email content
-    const mailOptions = {
-        from: `${email}`, // Sender's email
-        to: 'joey.mendez699@gmail.com', // Recipient's email
-        subject: `New message from ${fname} ${lname}`,
-        text: `
-            Form Name: ${formname || 'Not provided'}
-            UTM Source: ${utm_source || 'Not provided'}
-            UTM Medium: ${utm_medium || 'Not provided'}
-            UTM Campaign: ${utm_campaign || 'Not provided'}
-            UTM Term: ${utm_term || 'Not provided'}
-            GCLID: ${gclid_field || 'Not provided'}
-            IP: ${ip || 'Not provided'}
-            Page URL: ${page_url || 'Not provided'}
-            Dial Code: ${dial_code || 'Not provided'}
-            Full Name: ${fname}
             Email: ${email}
             Mobile Number: ${mobile_no || 'Not provided'}
             Country: ${country || 'Not provided'}
