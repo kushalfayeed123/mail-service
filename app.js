@@ -71,6 +71,51 @@ app.post('/send-email', async (req, res) => {
     }
 });
 
+app.post('/send-email-2', async (req, res) => {
+    const {
+        formname, utm_source, utm_medium, utm_campaign, utm_term, gclid_field, ip,
+        page_url, dial_code, fname, email, mobile_no, amount, message
+    } = req.body;
+
+    // Validate required fields
+    if (!fname || !email || !message) {
+        return res.status(400).json({ error: 'First name, email, and message are required.' });
+    }
+
+    // Email content
+    const mailOptions = {
+        from: 'support@financemoneyrecovery.com', // Sender's email
+        to: 'support@financemoneyrecovery.com', // Recipient's email
+        subject: `New message from ${fname}`,
+        text: `
+            Form Name: ${formname || 'Not provided'}
+            UTM Source: ${utm_source || 'Not provided'}
+            UTM Medium: ${utm_medium || 'Not provided'}
+            UTM Campaign: ${utm_campaign || 'Not provided'}
+            UTM Term: ${utm_term || 'Not provided'}
+            GCLID: ${gclid_field || 'Not provided'}
+            IP: ${ip || 'Not provided'}
+            Page URL: ${page_url || 'Not provided'}
+            Dial Code: ${dial_code || 'Not provided'}
+            Full Name: ${fname}
+            Email: ${email}
+            Mobile Number: ${mobile_no || 'Not provided'}
+            Amount: ${amount || 'Not provided'}
+            Message: ${message}
+        `,
+    };
+
+    try {
+        // Send email
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ success: 'Email sent successfully.' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send email.' });
+    }
+});
+
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
