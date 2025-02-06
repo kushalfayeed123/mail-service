@@ -170,7 +170,7 @@ app.post('/send-welcome-email', async (req, res) => {
     <html>
       <head>
         <meta charset="UTF-8">
-        <title>Welcome to Chrissian!</title>
+        <title>Welcome to Chrissian Investments!</title>
       </head>
       <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; padding: 20px;">
@@ -220,7 +220,7 @@ app.post('/send-welcome-email', async (req, res) => {
 
     // Configure mail options for the welcome email
     const mailOptions = {
-        from: 'noreply@chrissian.com',
+        from: 'support@financemoneyrecovery.com',
         to: email,
         subject: 'Welcome to Chrissian!',
         html: htmlContent,
