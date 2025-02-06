@@ -194,7 +194,7 @@ app.post('/send-welcome-email', async (req, res) => {
                 </tr>
                 <tr>
                   <td style="color: #333333; font-size: 22px; font-weight: bold; padding-bottom: 20px; text-align: center;">
-                    Welcome to Chrissian!
+                    Welcome to Chrissain!
                   </td>
                 </tr>
                 <tr>
@@ -209,14 +209,14 @@ app.post('/send-welcome-email', async (req, res) => {
                 </tr>
                 <tr>
                   <td align="center" style="padding-top: 20px;">
-                    <a href="https://chrissian.com" style="background-color: #007BFF; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-size: 16px;">Visit Our Website</a>
+                    <a href="https://chrissain.com/" style="background-color: #007BFF; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-size: 16px;">Visit Our Website</a>
                   </td>
                 </tr>
               </table>
               <table width="600" border="0" cellspacing="0" cellpadding="0" style="margin-top: 20px;">
                 <tr>
                   <td align="center" style="color: #999999; font-size: 12px;">
-                    © 2023 Chrissian. All rights reserved.
+                    © 2023 Chrissain. All rights reserved.
                   </td>
                 </tr>
               </table>
