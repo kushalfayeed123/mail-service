@@ -49,15 +49,24 @@ const Email = mongoose.model('Email', emailSchema);
 const Email2 = mongoose.model('Email2', emailSchema2);
 
 // Configure NodeMailer with Zoho Mail
+// const transporter = nodemailer.createTransport({
+//     host: 'smtp.zoho.com', // Zoho SMTP server
+//     port: 465, // Secure SMTP port
+//     secure: true, // Use SSL
+//     auth: {
+//         user: 'support@financemoneyrecovery.com', // Your Zoho email
+//         pass: 'GFpxSVhEaDab', // Your Zoho app password
+//     },
+// });
+
 const transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.com', // Zoho SMTP server
-    port: 465, // Secure SMTP port
-    secure: true, // Use SSL
+    service: 'gmail',
     auth: {
-        user: 'support@financemoneyrecovery.com', // Your Zoho email
-        pass: 'GFpxSVhEaDab', // Your Zoho app password
+        user: 'segunajanaku617@gmail.com', // Your Gmail address
+        pass: 'lylz uryf tfsg oame', // Your App Password
     },
 });
+
 
 // Endpoint: Send Email and Save Data (Generalized)
 app.post('/send-email', async (req, res) => {
