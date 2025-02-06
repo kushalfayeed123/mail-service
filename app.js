@@ -220,7 +220,7 @@ app.post('/send-welcome-email', async (req, res) => {
 
     // Configure mail options for the welcome email
     const mailOptions = {
-        from: 'support@financemoneyrecovery.com',
+        from: 'segunajanaku617@gmail.com',
         to: email,
         subject: 'Welcome to Chrissian!',
         html: htmlContent,
