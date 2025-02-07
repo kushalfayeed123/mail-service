@@ -3,6 +3,15 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const mongoose = require('mongoose');
+let apikey = '0e1db7ff20a3e43b3a488aabfbb1b80c'
+let secretKey = '9ef8bad0830c18dead21c12feb95c328'
+
+// Adjust the import so that if a default export exists, use it:
+// Use apiConnect instead of connect:
+const mailjetClient = require('node-mailjet').apiConnect(
+  apikey,
+  secretKey
+);
 
 // Initialize Express
 const app = express();
@@ -15,38 +24,39 @@ app.use(bodyParser.json());
 // MongoDB Connection
 const uri = "mongodb+srv://segunajanaku617:L2EWpkDTx9wBj4hw@cluster0.q1lhe.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(uri,)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Define the Email Schema
 const emailSchema = new mongoose.Schema({
-    formname: String,
-    utm_source: String,
-    utm_medium: String,
-    utm_campaign: String,
-    utm_term: String,
-    gclid_field: String,
-    ip: String,
-    page_url: String,
-    dial_code: String,
-    fname: String,
-    lname: String,
-    email: String,
-    mobile_no: String,
-    country: String,
-    scam_type: String,
-    amount: String,
-    message: String,
-    createdAt: { type: Date, default: Date.now },
+  formname: String,
+  utm_source: String,
+  utm_medium: String,
+  utm_campaign: String,
+  utm_term: String,
+  gclid_field: String,
+  ip: String,
+  page_url: String,
+  dial_code: String,
+  fname: String,
+  lname: String,
+  email: String,
+  mobile_no: String,
+  country: String,
+  scam_type: String,
+  amount: String,
+  message: String,
+  createdAt: { type: Date, default: Date.now },
 });
 const emailSchema2 = new mongoose.Schema({
-    formname: String, utm_source: String, utm_medium: String, utm_campaign: String, utm_term: String, gclid_field: String, ip: String,
-    page_url: String, dial_code: String, fname: String, email: String, mobile_no: String, amount: String, message: String,
-    createdAt: { type: Date, default: Date.now },
+  formname: String, utm_source: String, utm_medium: String, utm_campaign: String, utm_term: String, gclid_field: String, ip: String,
+  page_url: String, dial_code: String, fname: String, email: String, mobile_no: String, amount: String, message: String,
+  createdAt: { type: Date, default: Date.now },
 });
 
 const Email = mongoose.model('Email', emailSchema);
 const Email2 = mongoose.model('Email2', emailSchema2);
+
 
 // Configure NodeMailer with Zoho Mail
 // const transporter = nodemailer.createTransport({
@@ -60,35 +70,35 @@ const Email2 = mongoose.model('Email2', emailSchema2);
 // });
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'segunajanaku617@gmail.com', // Your Gmail address
-        pass: 'lylz uryf tfsg oame', // Your App Password
-    },
+  service: 'gmail',
+  auth: {
+    user: 'segunajanaku617@gmail.com', // Your Gmail address
+    pass: 'lylz uryf tfsg oame', // Your App Password
+  },
 });
 
 
 // Endpoint: Send Email and Save Data (Generalized)
 app.post('/send-email', async (req, res) => {
-    const payload = req.body;
+  const payload = req.body;
 
-    // Validate required fields
-    if (!payload.fname || !payload.email || !payload.message) {
-        return res.status(400).json({ error: 'First name, email, and message are required.' });
-    }
+  // Validate required fields
+  if (!payload.fname || !payload.email || !payload.message) {
+    return res.status(400).json({ error: 'First name, email, and message are required.' });
+  }
 
-    try {
-        // Save payload to MongoDB
-        const emailData = new Email(payload);
-        await emailData.save();
-        console.log('Payload saved successfully.');
+  try {
+    // Save payload to MongoDB
+    const emailData = new Email(payload);
+    await emailData.save();
+    console.log('Payload saved successfully.');
 
-        // Email content
-        const mailOptions = {
-            from: 'support@financemoneyrecovery.com', // Sender's email
-            to: 'support@financemoneyrecovery.com', // Recipient's email
-            subject: `New message from ${payload.fname} ${payload.lname || ''}`,
-            text: `
+    // Email content
+    const mailOptions = {
+      from: 'support@financemoneyrecovery.com', // Sender's email
+      to: 'support@financemoneyrecovery.com', // Recipient's email
+      subject: `New message from ${payload.fname} ${payload.lname || ''}`,
+      text: `
                 Form Name: ${payload.formname || 'Not provided'}
                 UTM Source: ${payload.utm_source || 'Not provided'}
                 UTM Medium: ${payload.utm_medium || 'Not provided'}
@@ -107,37 +117,37 @@ app.post('/send-email', async (req, res) => {
                 Amount: ${payload.amount || 'Not provided'}
                 Message: ${payload.message}
             `,
-        };
+    };
 
-        // Send email
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ success: 'Email sent and data saved successfully.' });
-    } catch (err) {
-        console.error('Error processing request:', err.message);
-        res.status(500).json({ error: 'Failed to save data or send email.' });
-    }
+    // Send email
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: 'Email sent and data saved successfully.' });
+  } catch (err) {
+    console.error('Error processing request:', err.message);
+    res.status(500).json({ error: 'Failed to save data or send email.' });
+  }
 });
 
 app.post('/send-email-2', async (req, res) => {
-    const {
-        formname, utm_source, utm_medium, utm_campaign, utm_term, gclid_field, ip,
-        page_url, dial_code, fname, email, mobile_no, amount, message
-    } = req.body;
-    const emailData = new Email2(payload);
-    await emailData.save();
-    console.log('Payload saved successfully.');
+  const {
+    formname, utm_source, utm_medium, utm_campaign, utm_term, gclid_field, ip,
+    page_url, dial_code, fname, email, mobile_no, amount, message
+  } = req.body;
+  const emailData = new Email2(payload);
+  await emailData.save();
+  console.log('Payload saved successfully.');
 
-    // Validate required fields
-    if (!fname || !email || !message) {
-        return res.status(400).json({ error: 'First name, email, and message are required.' });
-    }
+  // Validate required fields
+  if (!fname || !email || !message) {
+    return res.status(400).json({ error: 'First name, email, and message are required.' });
+  }
 
-    // Email content
-    const mailOptions = {
-        from: 'support@financemoneyrecovery.com', // Sender's email
-        to: 'support@financemoneyrecovery.com', // Recipient's email
-        subject: `New message from ${fname}`,
-        text: `
+  // Email content
+  const mailOptions = {
+    from: 'support@financemoneyrecovery.com', // Sender's email
+    to: 'support@financemoneyrecovery.com', // Recipient's email
+    subject: `New message from ${fname}`,
+    text: `
             Form Name: ${formname || 'Not provided'}
             UTM Source: ${utm_source || 'Not provided'}
             UTM Medium: ${utm_medium || 'Not provided'}
@@ -153,33 +163,43 @@ app.post('/send-email-2', async (req, res) => {
             Amount: ${amount || 'Not provided'}
             Message: ${message}
         `,
-    };
+  };
 
-    try {
-        // Send email
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ success: 'Email sent successfully.' });
-    } catch (error) {
-        console.error('Error sending email:', error);
-        res.status(500).json({ error: 'Failed to send email.' });
-    }
+
+
+  try {
+    // Send email
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: 'Email sent successfully.' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ error: 'Failed to send email.' });
+  }
 });
 
+/**
+ *
+ * Run:
+ *
+ */
+
+
+
 app.post('/send-welcome-email', async (req, res) => {
-    const { name, email } = req.body;
+  const { name, email } = req.body;
 
-    // Validate required fields
-    if (!name || !email) {
-        return res.status(400).json({ error: 'Name and email are required for welcome email.' });
-    }
+  // Validate required fields
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name and email are required for welcome email.' });
+  }
 
-    // Professional HTML email template
-    const htmlContent = `
+  // Professional HTML email template with personalized content
+  const htmlContent = `
     <!DOCTYPE html>
     <html>
       <head>
         <meta charset="UTF-8">
-        <title>Welcome to Chrissian Investments!</title>
+        <title>Welcome to Chrissain Investments!</title>
       </head>
       <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; padding: 20px;">
@@ -189,27 +209,27 @@ app.post('/send-welcome-email', async (req, res) => {
                 <tr>
                   <td align="center" style="padding-bottom: 20px;">
                     <!-- Optional: Add your logo here -->
-                    <img src="https://yourdomain.com/logo.png" alt="Chrissian Logo" width="150" style="display: block;">
+                    <img src="https://yourdomain.com/logo.png" alt="Chrissain Logo" width="150" style="display: block;">
                   </td>
                 </tr>
                 <tr>
                   <td style="color: #333333; font-size: 22px; font-weight: bold; padding-bottom: 20px; text-align: center;">
-                    Welcome to Chrissain!
+                    Welcome to Chrissain Investments!
                   </td>
                 </tr>
                 <tr>
                   <td style="color: #555555; font-size: 16px; line-height: 24px;">
                     <p>Dear ${name},</p>
-                    <p>Thank you for registering with Chrissian. We are thrilled to have you as part of our community and look forward to serving you with top-notch financial solutions.</p>
+                    <p>Thank you for registering with Chrissain. We are thrilled to have you as part of our community and look forward to serving you with top-notch financial solutions.</p>
                     <p>Your registered email is: <strong>${email}</strong></p>
                     <p>If you have any questions or need any assistance, feel free to reach out to our support team.</p>
                     <p>Warm regards,</p>
-                    <p>The Chrissian Team</p>
+                    <p>The Chrissain Team</p>
                   </td>
                 </tr>
                 <tr>
                   <td align="center" style="padding-top: 20px;">
-                    <a href="https://chrissain.com/" style="background-color: #007BFF; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-size: 16px;">Visit Our Website</a>
+                    <a href="https://chrissain.vercel.app/" style="background-color: #007BFF; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-size: 16px;">Visit Our Website</a>
                   </td>
                 </tr>
               </table>
@@ -225,29 +245,47 @@ app.post('/send-welcome-email', async (req, res) => {
         </table>
       </body>
     </html>
-    `;
+  `;
 
-    // Configure mail options for the welcome email
-    const mailOptions = {
-        from: 'segunajanaku617@gmail.com',
-        to: email,
-        subject: 'Welcome to Chrissian!',
-        html: htmlContent,
-    };
+  // Prepare Mailjet message data
+  const mailData = {
+    Messages: [
+      {
+        From: {
+          Email: 'joey.mendez699@gmail.com', // Ensure SENDER_EMAIL is set in your environment
+          Name: 'Chrissain Investments',
+        },
+        To: [
+          {
+            Email: email,
+            Name: name,
+          },
+        ],
+        Subject: 'Welcome to Chrissain Investments!',
+        TextPart: 'Thank you for registering with Chrissain Investments.',
+        HTMLPart: htmlContent,
+      },
+    ],
+  };
 
-    try {
-        // Send the welcome email
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ success: 'Welcome email sent successfully.' });
-    } catch (error) {
-        console.error('Error sending welcome email:', error);
-        res.status(500).json({ error: 'Failed to send welcome email.' });
-    }
+  try {
+    // Send the email using Mailjet's API (v3.1)
+    const result = await mailjetClient
+      .post('send', { version: 'v3.1' })
+      .request(mailData);
+    console.log(result.body);
+    res.status(200).json({ success: 'Welcome email sent successfully.' });
+  } catch (error) {
+    console.error('Error sending welcome email:', error);
+    res.status(500).json({ error: 'Failed to send welcome email.' });
+  }
 });
+
+
 
 
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
