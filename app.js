@@ -185,7 +185,7 @@ app.post('/send-email-2', async (req, res) => {
 
 
 
-app.post('/send-welcome-email', async (req, res) => {
+app.post('/send-welcome-email-2', async (req, res) => {
   const { name, email } = req.body;
 
   // Validate required fields
